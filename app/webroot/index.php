@@ -15,10 +15,14 @@
 // include the bootstrap file
 require dirname(__DIR__) . '/config/bootstrap.php';
 
-if (!isset($_GET['route'])
-	&& isset($_SERVER['REQUEST_URI'])
-	&& strlen(trim($_SERVER['REQUEST_URI'])) > 0) {
-	$_GET['route'] = $_SERVER['REQUEST_URI'];
+if (empty($_GET['route']) ) {
+	if (isset($_SERVER['REQUEST_URI'])
+		&& strlen(trim($_SERVER['REQUEST_URI'])) > 0
+		&& $_SERVER['REQUEST_URI'] != \rox\Router::url('/')) {
+		$_GET['route'] = $_SERVER['REQUEST_URI'];
+	} else {
+		$_GET['route'] = '/';
+	}
 }
 
 $dispatcher = new \rox\http\Dispatcher;
